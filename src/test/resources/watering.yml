@@ -1,0 +1,12 @@
+watering:
+  plants:
+    - id: 1
+      duration: 10
+      start-time: "10:00"
+      end-time: "20:00"
+      interval: 60 # in minutes
+      main-pump-pin: 17
+      splitter-pin: 18 #wip for solenoid
+      name: "bamboo-patio"
+      moisture-sensor-pin: 4 #wip
+
