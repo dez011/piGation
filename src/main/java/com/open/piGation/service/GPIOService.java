@@ -20,6 +20,7 @@ public class GPIOService {
             isPi = true;
         }
         if(isPi){
+            try{
             //Initialize Pi4j context
             this.pi4j = Pi4J.newAutoContext();
 
@@ -35,9 +36,12 @@ public class GPIOService {
                     .build());
 
 
-        } else {
-            pi4j = null;
-            pumpRelay = null;
+        } catch (Exception e){
+                System.err.println("Pi4J initialization failed: " + e.getMessage());
+                isPi = false;
+                pi4j = null;
+                pumpRelay = null;
+            }
         }
     }
 
