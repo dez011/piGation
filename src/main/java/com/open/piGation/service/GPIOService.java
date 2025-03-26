@@ -29,7 +29,7 @@ public class GPIOService {
             this.pumpRelay = pi4j.create(DigitalOutput.newConfigBuilder(pi4j)
                     .id("pumpRelay")
                     .name("Water Pump Relay")
-                    .address(16) // BCM GPIO 17 (Physical Pin 11)
+                    .address(12) // BCM GPIO 17 (Physical Pin 11)
                     .shutdown(DigitalState.LOW)
                     .initial(DigitalState.HIGH)
                     .provider("pigpio-digital-output")
