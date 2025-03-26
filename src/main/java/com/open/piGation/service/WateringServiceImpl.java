@@ -3,6 +3,7 @@ package com.open.piGation.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.open.piGation.config.WateringConfig;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,10 @@ public class WateringServiceImpl {
     public WateringServiceImpl(GPIOService gpioService, WateringConfig wateringConfig) {
         this.gpioService = gpioService;
         this.wateringConfig = wateringConfig;
+    }
+
+    @PostConstruct
+    public void init(){
         scheduleWatering();
     }
 

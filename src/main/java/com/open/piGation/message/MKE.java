@@ -1,5 +1,7 @@
 package com.open.piGation.message;
 
+import java.util.Objects;
+
 public class MKE {
     private String messageType;
     private String action;
@@ -12,11 +14,11 @@ public class MKE {
     }
 
     public boolean matches(String messageType, String action, String subAction){
-        return this.messageType == messageType && this.action.equals(action) && this.subAction.equals(subAction);
+        return Objects.equals(this.messageType, messageType) && this.action.equals(action) && this.subAction.equals(subAction);
     }
 
     public boolean isInterested(String messageType){
-        return this.messageType == messageType;
+        return Objects.equals(this.messageType, messageType);
     }
 
     public String getMessageType(){
