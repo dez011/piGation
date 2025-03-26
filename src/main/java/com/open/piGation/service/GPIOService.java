@@ -23,13 +23,13 @@ public class GPIOService {
             try{
             //Initialize Pi4j context
             this.pi4j = Pi4J.newAutoContext();
-
+            System.out.println("Pi4J initialized");
             //Configure GPIO pin for the pump relay BCM 17
             // Create and initialize the pump relay (GPIO 17)
             this.pumpRelay = pi4j.create(DigitalOutput.newConfigBuilder(pi4j)
                     .id("pumpRelay")
                     .name("Water Pump Relay")
-                    .address(12) // BCM GPIO 17 (Physical Pin 11)
+                    .address(12) // BCM GPIO 12 (Physical Pin 32)
                     .shutdown(DigitalState.LOW)
                     .initial(DigitalState.HIGH)
                     .provider("pigpio-digital-output")
