@@ -25,6 +25,7 @@ public class WateringHandler extends AbstractMessageHandler {
     @Override
     public String handleMessage(GeneralMessage message) {
         boolean finished;
+        System.out.println("Handling message: " + message);
         Map<String, Object> response = new HashMap<>();
 
         if(message.getAction().equals("start")){

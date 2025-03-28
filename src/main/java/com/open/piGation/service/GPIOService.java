@@ -1,5 +1,8 @@
 package com.open.piGation.service;
 
+import com.diozero.devices.LED;
+import com.diozero.internal.spi.NativeDeviceFactoryInterface;
+import com.diozero.sbc.DeviceFactoryHelper;
 import org.springframework.stereotype.Service;
 import com.diozero.api.DigitalOutputDevice;
 
@@ -9,6 +12,9 @@ public class GPIOService {
     private DigitalOutputDevice pumpRelay;
 
     public GPIOService() {
+
+        pumpRelay = new DigitalOutputDevice(17, true, false);
+
 //        String os = System.getProperty("os.name").toLowerCase();
 //        if (os.contains("linux") && !os.contains("windows")) {
 //            isPi = true;
