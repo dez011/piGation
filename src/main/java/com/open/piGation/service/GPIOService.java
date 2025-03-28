@@ -29,7 +29,6 @@ public class GPIOService {
                 isPi = false;
             }
         }
-        setPumpState(true);
     }
 
     public void setPumpState(boolean state) {
