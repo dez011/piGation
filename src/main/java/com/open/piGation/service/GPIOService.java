@@ -9,26 +9,26 @@ public class GPIOService {
     private DigitalOutputDevice pumpRelay;
 
     public GPIOService() {
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.contains("linux") && !os.contains("windows")) {
-            isPi = true;
-        }
-
-        if (isPi) {
-            try {
-                // Set the Diozero provider (you can also do this via -Ddiozero.provider)
-                System.setProperty("diozero.provider", "linuxfs");
-
-                // Use BCM pin 12 (physical pin 32)
-                pumpRelay = new DigitalOutputDevice(17, true, false); // initialState=true, shutdownState=false
-                System.out.println("Diozero initialized on GPIO12 (BCM)");
-
-            } catch (Exception e) {
-                System.err.println("Diozero init failed: " + e.getMessage());
-                pumpRelay = null;
-                isPi = false;
-            }
-        }
+//        String os = System.getProperty("os.name").toLowerCase();
+//        if (os.contains("linux") && !os.contains("windows")) {
+//            isPi = true;
+//        }
+//
+//        if (isPi) {
+//            try {
+//                // Set the Diozero provider (you can also do this via -Ddiozero.provider)
+//                System.setProperty("diozero.provider", "linuxfs");
+//
+//                // Use BCM pin 12 (physical pin 32)
+//                pumpRelay = new DigitalOutputDevice(17, true, false); // initialState=true, shutdownState=false
+//                System.out.println("Diozero initialized on GPIO12 (BCM)");
+//
+//            } catch (Exception e) {
+//                System.err.println("Diozero init failed: " + e.getMessage());
+//                pumpRelay = null;
+//                isPi = false;
+//            }
+//        }
     }
 
     public void setPumpState(boolean state) {
