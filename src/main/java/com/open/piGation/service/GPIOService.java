@@ -1,98 +1,71 @@
 package com.open.piGation.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.pi4j.Pi4J;
-import com.pi4j.context.Context;
-import com.pi4j.io.gpio.digital.DigitalOutput;
-import com.pi4j.io.gpio.digital.DigitalState;
+import com.diozero.api.DigitalOutputDevice;
 
 @Service
 public class GPIOService {
-    private boolean isPi = false; //change to true when running on pi
-    private Context pi4j;
-    private DigitalOutput pumpRelay;
+    private boolean isPi = false;
+    private DigitalOutputDevice pumpRelay;
 
-    @Autowired
-    public GPIOService(){
+    public GPIOService() {
         String os = System.getProperty("os.name").toLowerCase();
-        if(os.contains("linux") && !os.contains("windows")){
+        if (os.contains("linux") && !os.contains("windows")) {
             isPi = true;
         }
-        if(isPi){
-            try{
-            //Initialize Pi4j context
-            this.pi4j = Pi4J.newAutoContext();
-            System.out.println("Pi4J initialized");
-            //Configure GPIO pin for the pump relay BCM 17
-            // Create and initialize the pump relay (GPIO 17)
-            this.pumpRelay = pi4j.create(DigitalOutput.newConfigBuilder(pi4j)
-                    .id("pumpRelay")
-                    .name("Water Pump Relay")
-                    .address(12) // BCM GPIO 12 (Physical Pin 32)
-                    .shutdown(DigitalState.LOW)
-                    .initial(DigitalState.HIGH)
-                    .provider("pigpio-digital-output")
-                    .build());
 
+        if (isPi) {
+            try {
+                // Set the Diozero provider (you can also do this via -Ddiozero.provider)
+                System.setProperty("diozero.provider", "linuxfs");
 
-        } catch (Exception e){
-                System.err.println("Pi4J initialization failed: " + e.getMessage());
-                isPi = false;
-                pi4j = null;
+                // Use BCM pin 12 (physical pin 32)
+                pumpRelay = new DigitalOutputDevice(17, true, false); // initialState=true, shutdownState=false
+                System.out.println("Diozero initialized on GPIO12 (BCM)");
+
+            } catch (Exception e) {
+                System.err.println("Diozero init failed: " + e.getMessage());
                 pumpRelay = null;
+                isPi = false;
             }
         }
+        setPumpState(true);
     }
 
     public void setPumpState(boolean state) {
-        if(isPi && pumpRelay != null){
-            //Pi4j code to set pump state
-            if(state){
-                pumpRelay.high(); //turn pump on
+        if (isPi && pumpRelay != null) {
+            if (state) {
+                pumpRelay.on();
                 System.out.println("Pump turned ON");
             } else {
-                pumpRelay.low(); //turn pump off
+                pumpRelay.off();
                 System.out.println("Pump turned OFF");
             }
-
         } else {
-            //Mock code to set pump state
-            System.out.println("Setting pump state to " + state);
+            System.out.println("Setting pump state to " + state + " (mock)");
         }
     }
 
     public void setPumpState(int pin, boolean state) {
-        if(isPi && pi4j != null){
-            DigitalOutput pumpRelay = pi4j.create(DigitalOutput.newConfigBuilder(pi4j)
-                    .id("pumpRelay-" + pin)
-                    .name("Water Pump Relay " + pin)
-                    .address(pin)
-                    .shutdown(DigitalState.LOW)
-                    .initial(DigitalState.LOW)
-                    .provider("pigpio-digital-output")
-                    .build());
-
-            if(state){
-                pumpRelay.high(); //turn pump on
-                System.out.println("Pump on pin " + pin + " turned ON");
-            } else {
-                pumpRelay.low(); //turn pump off
-                System.out.println("Pump on pin " + pin + " turned OFF");
+        if (isPi) {
+            try (DigitalOutputDevice dynamicRelay = new DigitalOutputDevice(pin, false, false)) {
+                if (state) {
+                    dynamicRelay.on();
+                    System.out.println("Pump on pin " + pin + " turned ON");
+                } else {
+                    dynamicRelay.off();
+                    System.out.println("Pump on pin " + pin + " turned OFF");
+                }
             }
         } else {
-            //Mock code to set pump state
-            System.out.println("Setting pump state on pin " + pin + " to " + state);
+            System.out.println("Setting pump state on pin " + pin + " to " + state + " (mock)");
         }
     }
 
-
     public boolean getPumpState() {
-        if(isPi && pumpRelay != null){
-            //Pi4j code to get pump state
-            return pumpRelay.isHigh();
+        if (isPi && pumpRelay != null) {
+            return pumpRelay.isOn();
         } else {
-            //Mock code to get pump state
             return false;
         }
     }

@@ -35,6 +35,9 @@ dependencies {
 	// Pi4J Plugins (Platforms and I/O Providers)
 	implementation 'com.pi4j:pi4j-plugin-raspberrypi:2.3.0'
 
+	implementation 'com.diozero:diozero-core:1.4.1'
+	implementation 'com.diozero:diozero-provider-pigpio:1.2.1'
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
